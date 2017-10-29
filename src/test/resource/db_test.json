@@ -1,0 +1,22 @@
+{
+  "Kl_transform.jar": {
+    "input": {
+      "db": "ckpj_etl",
+      "tbl": "testin"
+    },
+    "output": {
+      "db": "ckpj_etl",
+      "tbl": "testout"
+    }
+  },
+  "Kl_test.jar": {
+    "input": {
+      "db": "ckpj_etl",
+      "tbl": "testin2"
+    },
+    "output": {
+      "db": "ckpj_etl",
+      "tbl": "testout2"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "Kl_transform.jar":{
+    "spark.executor.memory":"1g",
+    "spark.executor.core":"5",
+    "spark.test":"1"
+  },
+  "test_transform.jar":{
+    "spark.executor.memory":"1g",
+    "spark.executor.core":"5",
+    "spark.test":"1"
+  }
+}
