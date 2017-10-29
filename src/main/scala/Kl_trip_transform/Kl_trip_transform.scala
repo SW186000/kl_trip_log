@@ -12,9 +12,9 @@ object Kl_trip_transform {
     var spark = SparkSession.builder().getOrCreate()
     spark_job.setSparkInfo(spark)
 
-    /* RDD input_data = spark_job.LoadInputRddData()
-    RDD intermediate_data = input_data.aggregatebyKey().map(add_type).filter().toDF()
-    spark_job.OutputToHive(intermediate_data) */
+    val input_data = spark_job.LoadHiveTblToRDD(spark)
+    val intermediate_data = input_data.map(x => (x.toSeq._1,x)).aggregatebyKey().map(add_type).filter().toDF()
+    spark_job.ExportDataFrameToHive(spark,intermediate_data)
 
   }
 
