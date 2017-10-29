@@ -1,6 +1,7 @@
 package SparkJobTemplate
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.json4s.jackson.JsonMethods
 import org.json4s.DefaultFormats
 
@@ -48,6 +49,16 @@ class SparkJobConf(job_name:String, db_inf:String,conf_inf:String) extends Spark
 
   def setSparkInfo(spark: => SparkSession):Unit = {
     this.conf.foreach{case (key,value) => spark.conf.set(key,value)}
+  }
+
+  def LoadHiveToRDD(spark: =>SparkSession):RDD[Row] = {
+    spark.table(this.db_input).createTempView(this.db_input)
+    spark.sql("select * from " + this.db_input).rdd
+  }
+
+  def ExportDataFrameToHive(spark: => SparkSession,OutDF:DataFrame):Unit = {
+    OutDF.createTempView(this.db_output)
+    spark.table(this.db_output).write.saveAsTable(tableName=this.db_output)
   }
 
 }
