@@ -214,6 +214,6 @@
     <orderEntry type="library" scope="PROVIDED" name="SBT: com.clearspring.analytics:stream:2.7.0:jar" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="SBT: aopalliance:aopalliance:1.0:jar" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="SBT: antlr:antlr:2.7.7:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.11.11:jar" level="project" />
+    <orderEntry type="library" name="scala-sdk-2.11.11" level="project" />
   </component>
 </module>

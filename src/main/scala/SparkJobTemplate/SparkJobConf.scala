@@ -47,8 +47,9 @@ class SparkJobConf(job_name:String, db_inf:String,conf_inf:String) extends Spark
   override var conf:Map[String,String] = this.setConfInfo(job_name,conf_inf)
   /* override var spark:SparkSession = this.setSparkInfo(conf_inf) */
 
-  def setSparkInfo(spark: => SparkSession):Unit = {
+  def setSparkInfo(spark: => SparkSession):SparkSession = {
     this.conf.foreach{case (key,value) => spark.conf.set(key,value)}
+    spark
   }
 
   def LoadHiveTblToDF(spark: =>SparkSession):DataFrame = {
