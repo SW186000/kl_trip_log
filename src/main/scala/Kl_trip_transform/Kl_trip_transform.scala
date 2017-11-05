@@ -28,11 +28,30 @@ object Kl_trip_transform {
   }
 
   def add_type(x:Iterator[KL_tran_src]): List[KL_tran_goto_type] = {
-    val add_back_flg_data = get_back_type(Nil,x.toList.sortBy({case x => x.loc_datetime}))
-    get_goto_type(Nil,add_back_flg_data.sortBy({case y => -y.loc_datetime}))
+    /* val add_back_flg_data = get_back_type(Nil,x.toList.sortBy({case x => x.loc_datetime}))
+    get_goto_type(Nil,add_back_flg_data.sortBy({case y => -y.loc_datetime})) */
+    val x_back_type = x.foldLeft[Vector[KL_tran_back_type]](Vector[KL_tran_back_type]()){
+      (x, y) => add_back_type(x,y)
+    }
+    val x_goto_type = x_back_type.foldLeft[Vector[KL_tran_goto_type]](Vector[KL_tran_goto_type]()){
+      (x,y) => add_goto_type(x,y)
+    }
+    x_goto_type.toList
   }
 
+  def add_goto_type(x:Vector[KL_tran_goto_type],y:KL_tran_back_type):Vector[KL_tran_goto_type] = {
+    if (x.isEmpty) KL_tran_goto_type(y.mdn,y.loc_datetime,y.loc_type,y.ym,y.back_type,y.back_dttm,0,0) +: x
+    else if (x.head.loc_type == 100) KL_tran_goto_type(y.mdn,y.loc_datetime,y.loc_type,y.ym,y.back_type,y.back_dttm,100,x.head.loc_datetime) +: x
+    else KL_tran_goto_type(y.mdn,y.loc_datetime,y.loc_type,y.ym,y.back_type,y.back_dttm,20,x.head.loc_datetime) +: x
+  }
 
+  def add_back_type(x:Vector[KL_tran_back_type],y:KL_tran_src):Vector[KL_tran_back_type] = {
+    if (x.isEmpty) KL_tran_back_type(y.mdn, y.loc_datetime, y.loc_type,y.ym, 0, 0) +: x
+    else if (x.head.loc_type == 100) KL_tran_back_type(y.mdn,y.loc_datetime,y.loc_type,y.ym,100,x.head.loc_datetime) +: x
+    else KL_tran_back_type(y.mdn,y.loc_datetime,y.loc_type,y.ym,10,x.head.loc_datetime) +: x
+  }
+
+  @deprecated
   def get_back_type(prev_row:List[KL_tran_src], row_list_asc:List[KL_tran_src]): List[KL_tran_back_type] ={
     row_list_asc match {
       case Nil => Nil
@@ -44,6 +63,7 @@ object Kl_trip_transform {
 
   }
 
+  @deprecated
   def get_goto_type(prev_row:List[KL_tran_back_type], row_list_asc:List[KL_tran_back_type]): List[KL_tran_goto_type] ={
     row_list_asc match {
       case Nil => Nil
